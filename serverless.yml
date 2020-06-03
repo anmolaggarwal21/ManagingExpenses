@@ -1,0 +1,208 @@
+service:
+  name: managingexpense
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+
+# Add the serverless-webpack plugin
+plugins:
+  - serverless-webpack
+  - serverless-iam-roles-per-function
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region,'us-east-2'}
+
+  environment:
+    IS_OFFLINE: false
+    Income_Table: IncomeTable-${self:provider.stage}
+    Expense_Table: ExpenseTable-${self:provider.stage}
+    INCOME_ID_INDEX: IncomeUserIdIndex
+    EXPENSE_ID_INDEX: ExpenseUserIdIndex
+
+functions:
+  CreateIncome:
+    handler: src/lambda/http/Income/createIncome.handler
+    events:
+      - http:
+          method: post 
+          path: income
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"        
+        Action:
+          - dynamodb:PutItem        
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Income_Table}
+
+  GetIncomeByUserId:
+    handler: src/lambda/http/Income/getIncomeByUser.handler
+    events:
+      - http:
+          method: get 
+          path: incomeByUser/{userId}
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+        - Dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Income_Table}/index/${self:provider.environment.INCOME_ID_INDEX}
+
+      
+  GetIncome:
+    handler: src/lambda/http/Income/getIncome.handler
+    events:
+      - http:
+          method: get 
+          path: income/{userId}
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"        
+        Action:
+          - dynamodb:Query        
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Income_Table}
+
+  DeleteIncome:
+    handler: src/lambda/http/Income/deleteIncome.handler
+    events:
+      - http:
+          method: delete
+          path: income/{userId}
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:DeleteItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Income_Table}
+
+  UpdateIncome:
+    handler: src/lambda/http/Income/updateIncome.handler
+    events:
+      - http:
+          method: put 
+          path: income/{userId}
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Income_Table}
+
+  CreateExpense:
+    handler: src/lambda/http/Expense/createExpense.handler
+    events:
+      - http:
+          method: post 
+          path: expense
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"        
+        Action:
+          - dynamodb:PutItem        
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Expense_Table}
+
+  GetExpenseByUserId:
+    handler: src/lambda/http/Expense/getExpenseByUser.handler
+    events:
+      - http:
+          method: get 
+          path: expenseByUser/{Id}
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+        - Dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Expense_Table}/index/${self:provider.environment.EXPENSE_ID_INDEX}
+
+      
+  GetExpense:
+    handler: src/lambda/http/Expense/getExpense.handler
+    events:
+      - http:
+          method: get 
+          path: expense/{Id}
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"        
+        Action:
+          - dynamodb:Query        
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Expense_Table}
+
+  DeleteExpense:
+    handler: src/lambda/http/Expense/deleteExpense.handler
+    events:
+      - http:
+          method: delete
+          path: expense/{Id}
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:DeleteItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Expense_Table}
+
+  UpdateExpense:
+    handler: src/lambda/http/Expense/updateExpense.handler
+    events:
+      - http:
+          method: put 
+          path: expense/{Id}
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Expense_Table}
+
+
+resources:
+  Resources:
+    IncomeDynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: incomeId
+            AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: incomeId
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.INCOME_ID_INDEX}
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH 
+            Projection:
+              ProjectionType: ALL 
+        BillingMode: PAY_PER_REQUEST
+        TableName : ${self:provider.environment.Income_Table}
+
+    ExpenseDynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: expenseId
+            AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: expenseId
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.EXPENSE_ID_INDEX}
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH 
+            Projection:
+              ProjectionType: ALL 
+        BillingMode: PAY_PER_REQUEST
+        TableName : ${self:provider.environment.Expense_Table}
+          
+          
