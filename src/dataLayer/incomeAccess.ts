@@ -112,4 +112,4 @@ function createDynamoDBClient (){
     else{
         return new AWS.DynamoDB.DocumentClient();
     }
-    }
+}

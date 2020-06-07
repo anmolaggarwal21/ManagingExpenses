@@ -14,6 +14,7 @@ export async function createExpenseeService(createIncome: createIncomeRequest){
         Description : createIncome.Description,
         CategoryId :  uuid.v4(),
         userId : uuid.v4(),
+        accountId: createIncome.accountId,
         isImage : false
      }
      

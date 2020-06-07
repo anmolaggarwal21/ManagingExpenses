@@ -26,6 +26,10 @@ provider:
     Expense_Table: ExpenseTable-${self:provider.stage}
     INCOME_ID_INDEX: IncomeUserIdIndex
     EXPENSE_ID_INDEX: ExpenseUserIdIndex
+    Category_Table: ategoryTable-${self:provider.stage}
+    CATEGORY_TYPE_INDEX : CategoryTypeINDEX
+    Account_Table: AccountTable-${self:provider.stage}
+    ACCOUNT_TYPE_INDEX : AccountTypeINDEX
 
 functions:
   CreateIncome:
@@ -160,6 +164,140 @@ functions:
           - dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Expense_Table}
 
+  CreateCategory:
+    handler: src/lambda/http/Category/createCategory.handler
+    events:
+      - http:
+          method: post 
+          path: category
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"        
+        Action:
+          - dynamodb:PutItem        
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Category_Table}
+
+  GetCategoryByCategoryType:
+    handler: src/lambda/http/Category/getCategoryByCategoryType.handler
+    events:
+      - http:
+          method: get 
+          path: categoryByType/{Id}
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+        - Dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Category_Table}/index/${self:provider.environment.CATEGORY_TYPE_INDEX}
+
+  GetCategoryByCategoryId:
+    handler: src/lambda/http/Category/getCategoryByCategoryId.handler
+    events:
+      - http:
+          method: get 
+          path: categoryById/{Id}
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+        - Dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Category_Table}
+
+
+  DeleteCategory:
+    handler: src/lambda/http/Category/deleteCategory.handler
+    events:
+      - http:
+          method: delete
+          path: category/{Id}
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:DeleteItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Category_Table}
+
+  UpdateCategory:
+    handler: src/lambda/http/Category/updateCategory.handler
+    events:
+      - http:
+          method: put 
+          path: category/{Id}
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Category_Table}
+
+
+  CreateAccount:
+    handler: src/lambda/http/Account/createAccount.handler
+    events:
+      - http:
+          method: post 
+          path: account
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"        
+        Action:
+          - dynamodb:PutItem        
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Account_Table}
+
+  GetAccountByAccountType:
+    handler: src/lambda/http/Account/getAccountByAccountType.handler
+    events:
+      - http:
+          method: get 
+          path: accountByType/{Id}
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+        - Dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Account_Table}/index/${self:provider.environment.ACCOUNT_TYPE_INDEX}
+
+  GetAccountByAccountId:
+    handler: src/lambda/http/Account/getAccountByAccountId.handler
+    events:
+      - http:
+          method: get 
+          path: accountById/{Id}
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+        - Dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Account_Table}
+
+
+  DeleteAccount:
+    handler: src/lambda/http/Account/deleteAccount.handler
+    events:
+      - http:
+          method: delete
+          path: account/{Id}
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:DeleteItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Account_Table}
+
+  UpdateAccount:
+    handler: src/lambda/http/Account/updateAccount.handler
+    events:
+      - http:
+          method: put 
+          path: account/{Id}
+          cors: true
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Account_Table}
+
+
 
 resources:
   Resources:
@@ -204,5 +342,50 @@ resources:
               ProjectionType: ALL 
         BillingMode: PAY_PER_REQUEST
         TableName : ${self:provider.environment.Expense_Table}
+
+    CategoryDynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: categoryId
+            AttributeType: S 
+          - AttributeName: categoryType
+            AttributeType: S
+        KeySchema:
+          - AttributeName: categoryId
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName:  ${self:provider.environment.CATEGORY_TYPE_INDEX}
+            KeySchema:
+              - AttributeName: categoryType
+                KeyType: HASH 
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
+        TableName:  ${self:provider.environment.Category_Table}
+
+    AccountDynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: accountId
+            AttributeType: S 
+          - AttributeName: accountType
+            AttributeType: S
+        KeySchema:
+          - AttributeName: accountId
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName:  ${self:provider.environment.ACCOUNT_TYPE_INDEX}
+            KeySchema:
+              - AttributeName: accountType
+                KeyType: HASH 
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
+        TableName:  ${self:provider.environment.Account_Table}
+          
+
+
           
           

@@ -9,5 +9,6 @@ export interface Income{
     Description: string,
     CategoryId: string,
     userId: string,
+    accountId: string
     isImage: bool
 }
