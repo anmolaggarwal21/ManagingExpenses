@@ -41,7 +41,19 @@ private readonly accounTableIndex = process.env.ACCOUNT_TYPE_INDEX
 
         return result.Items as Account[]
     }
+    async getAllAccountAccess(): Promise<Account[]>{
+        var result = await this.docClient.query({
+            TableName: this.bankTable,
+            KeyConditionExpression: 'accountType IN (:debitType ,:creditType)',
+            ExpressionAttributeValues:{
+                ':debitType' : 'Debit',
+                ':creditType' : 'Credit'
+            },
+            IndexName :this.accounTableIndex
+        }).promise()
 
+        return result.Items as Account[]
+    }
     async deleteAccountAccessById(accountId: string){
         await this.docClient.delete(
             {

@@ -15,7 +15,13 @@ export async function getAccountByTypeService(accountType: string){
 }
 
 export async function deleteAccountByIdService(accountId){
-    return await accountService.deleteAccountAccessById(accountId)
+    return await accountService.deleteAccountAccessById(accountId) 
+    
+}
+
+export async function getAllAccountService(){
+    return await accountService.getAllAccountAccess() 
+    
 }
 
 export async function createAccountService(createAccount: createAccountRequest){

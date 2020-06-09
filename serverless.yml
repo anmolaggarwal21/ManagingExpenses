@@ -257,6 +257,7 @@ functions:
         - Dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Account_Table}/index/${self:provider.environment.ACCOUNT_TYPE_INDEX}
 
+ 
   GetAccountByAccountId:
     handler: src/lambda/http/Account/getAccountByAccountId.handler
     events:

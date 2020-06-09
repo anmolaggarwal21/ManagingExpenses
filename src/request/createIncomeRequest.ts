@@ -4,7 +4,7 @@ export interface createIncomeRequest{
      imageUrl?: string,
      Description: string,
      CategoryId: string,
-     categoryId: string
+     accountId: string
 }
 
 export interface updateIncomeRequest extends createIncomeRequest  {

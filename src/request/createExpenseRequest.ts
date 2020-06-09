@@ -4,7 +4,7 @@ export interface createExpenseRequest{
     imageUrl?: string,
     Description: string,
     CategoryId: string,
-    accountId: string
+    accountId: string,
 }
 
 export interface updateExpenseRequest extends createExpenseRequest  {

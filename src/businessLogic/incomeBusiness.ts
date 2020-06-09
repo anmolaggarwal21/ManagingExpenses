@@ -14,7 +14,8 @@ export async function createIncomeService(createIncome: createIncomeRequest){
         Description : createIncome.Description,
         CategoryId :  uuid.v4(),
         userId : uuid.v4(),
-        isImage : false
+        isImage : false,
+        accountId: createIncome.accountId
      }
      
    return await IncomeAccess.createIncome(income)
