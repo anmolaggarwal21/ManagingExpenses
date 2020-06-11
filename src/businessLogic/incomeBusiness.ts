@@ -12,8 +12,8 @@ export async function createIncomeService(createIncome: createIncomeRequest){
         amount : createIncome.amount,
         date : new Date().toDateString(),
         Description : createIncome.Description,
-        CategoryId :  uuid.v4(),
-        userId : uuid.v4(),
+        CategoryId : createIncome.CategoryId ,
+        userId : 'dad528fd-9327-4e69-bf6b-de92fbde4d5c',
         isImage : false,
         accountId: createIncome.accountId
      }
