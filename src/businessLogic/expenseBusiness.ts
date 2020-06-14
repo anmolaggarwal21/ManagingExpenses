@@ -12,8 +12,8 @@ export async function createExpenseeService(createExpense: createExpenseRequest)
         amount : createExpense.amount,
         date : new Date().toDateString(),
         Description : createExpense.Description,
-        CategoryId :  uuid.v4(),
-        userId : uuid.v4(),
+        CategoryId :  createExpense.CategoryId ,
+        userId : 'dad528fd-9327-4e69-bf6b-de92fbde4d5c',
         accountId: createExpense.accountId,
         isImage : false
      }
