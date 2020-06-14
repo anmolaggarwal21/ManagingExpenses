@@ -1,0 +1,598 @@
+{
+	"info": {
+		"_postman_id": "4851175e-48ed-4827-a006-f1abc395fd71",
+		"name": "Managing Expense",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "Create Category ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "283614d3-e319-45df-bd67-db136bf49c4c",
+								"exec": [
+									"bodyData = JSON.parse(responseBody);\r",
+									"\r",
+									"categoryId = bodyData.item.categoryId ; \r",
+									"\r",
+									"categoryType = bodyData.item.categoryType ; \r",
+									"\r",
+									"\r",
+									" pm.globals.set(\"categoryId\",categoryId)\r",
+									" pm.globals.set(\"categoryType\",categoryType)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n \t\r\n \"categoryType\": \"income\",\r\n   \"categoryName\": \"salary\",\r\n   \"categoryDescription\": \"salary from the company\"\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}//dev/category",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"",
+								"dev",
+								"category"
+							]
+						},
+						"description": "We are creating a category, which will be used in creating income or expense entry  "
+					},
+					"response": []
+				},
+				{
+					"name": "get Category by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/categoryById/{{categoryId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"categoryById",
+								"{{categoryId}}"
+							]
+						},
+						"description": "Get a category by id, as id will always be unique"
+					},
+					"response": []
+				},
+				{
+					"name": "update the category using category Id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \t\r\n \"categoryType\": \"income\",\r\n   \"categoryName\": \"salary \",\r\n   \"categoryDescription\": \"salary from the companyname \"\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/category/{{categoryId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"category",
+								"{{categoryId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category by Category ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \t\r\n \"categoryType\": \"income\",\r\n   \"categoryName\": \"salary \",\r\n   \"categoryDescription\": \"salary from the companyname \"\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/category/{{categoryId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"category",
+								"{{categoryId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Category by type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/categoryByType/{{categoryType}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"categoryByType",
+								"{{categoryType}}"
+							]
+						},
+						"description": "We might get a list of categories "
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "create account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dc9f45a0-73a4-4866-9541-1a5067c7a81d",
+								"exec": [
+									"bodyData = JSON.parse(responseBody);\r",
+									"\r",
+									"accountId = bodyData.item.accountId ; \r",
+									"\r",
+									"accountType = bodyData.item.accountType ; \r",
+									"\r",
+									" pm.globals.set(\"accountId\",accountId)\r",
+									" pm.globals.set(\"accountType\",accountType)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\n\t\"description\": \"account description\",\n    \"accountName\": \"sbi bank\",\n    \"accountType\": \"debit\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}//account",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get account by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/accountById/{{accountId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"accountById",
+								"{{accountId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get account by type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/accountByType/{{accountType}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"accountByType",
+								"{{accountType}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update account by Id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\n\t\"description\": \"account description\",\n    \"accountName\": \"sbi\",\n    \"accountType\": \"credit\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/account/{{accountId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"account",
+								"{{accountId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete account By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/account/{{accountId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"account",
+								"{{accountId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Income",
+			"item": [
+				{
+					"name": "create income",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "669ef1e4-20c2-43bc-b07e-6fba0c13324c",
+								"exec": [
+									"bodyData = JSON.parse(responseBody);\r",
+									"\r",
+									"incomeId = bodyData.item.incomeId ; \r",
+									"\r",
+									"userId = bodyData.item.userId ; \r",
+									"\r",
+									"console.log(incomeId)\r",
+									" pm.globals.set(\"incomeId\",incomeId)\r",
+									" pm.globals.set(\"userId\",userId)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t \"amount\": 5000,\n     \n     \"accountId\": {{accountId}},\n     \"Description\": \"income from audit\",\n     \"CategoryId\": {{categoryId}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/income",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"income"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get income on basics of income",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/income/{{incomeId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"income",
+								"{{incomeId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update the income",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n\t\"amount\": 5000,\n     \n     \n     \"Description\": \"income from audit11\",\n     \"CategoryId\": \"category ID\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/income/{{incomeId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"income",
+								"{{incomeId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get income on basics of user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/incomeByUser/{{userId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"incomeByUser",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Income",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/income/{{incomeId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"income",
+								"{{incomeId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Expense",
+			"item": [
+				{
+					"name": "create expense",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "357ded98-46a3-411b-82e1-f18848ed8113",
+								"exec": [
+									"bodyData = JSON.parse(responseBody);\r",
+									"\r",
+									"expenseId = bodyData.item.expenseId ; \r",
+									"\r",
+									"userIdForExpense = bodyData.item.userId ; \r",
+									"\r",
+									"console.log(userIdForExpense)\r",
+									" pm.globals.set(\"expenseId\",expenseId)\r",
+									" pm.globals.set(\"userIdForExpense\",userIdForExpense)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t \"amount\": 5000,\n     \n     \"accountId\": {{accountId}},\n     \"Description\": \"expense amount\",\n     \"CategoryId\":  {{categoryId}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/expense",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"expense"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get expense on basics of expense id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/expense/{{expenseId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"expense",
+								"{{expenseId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update the expense on basics of expense id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ebfe2d38-b2b4-4e4b-974a-20156f8d552b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n\t\"amount\": 5000,\n     \n     \n     \"Description\": \"expense from audit11\",\n     \"CategoryId\": \"category ID\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/expense/{{expenseId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"expense",
+								"{{expenseId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get expense on basics of user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/expenseByUser/{{userIdForExpense}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"expenseByUser",
+								"{{userIdForExpense}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Expense on basics of expense id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/expense/{{expenseId}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"expense",
+								"{{expenseId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "6c4bb96c-19aa-484b-964c-a33bb654e038",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "9ea26313-eeaf-4bff-a3d6-025fab275009",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "5a4c8b4b-07d9-4e78-a66d-d4f18adfe5a1",
+			"key": "URL",
+			"value": "url",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
