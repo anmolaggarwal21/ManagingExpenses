@@ -16,6 +16,10 @@ In the root folder, run the below command
 
 sls deploy -v
 
-API
+# API Testing
+
+Added the postman collection. Feel free to download then and test the application. In the collection you need to enter the URL which will be the service end point after you have deployed the serverless application. 
+
+
 
 
