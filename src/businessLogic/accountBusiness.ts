@@ -10,8 +10,21 @@ export async function getAccountByIdService(accountId: string){
     return await accountService.getAccountAccessById(accountId)
 }
 
-export async function getAccountByTypeService(accountType: string){
-    return await accountService.getAccountAccessByType(accountType)
+// export async function getAccountByTypeService(accountType: string){
+//     return await accountService.getAccountAccessByType(accountType)
+// }
+
+export async function getAccountByUserIdService(userId: string, accountType?: string){
+   
+    if(accountType && accountType != ''){
+        console.log('inside if')
+        return await accountService.getAccountAccessByUserId(userId, accountType)
+    }
+    else{
+        console.log('inside else')
+        return await accountService.getAccountAccessByUserId(userId)
+    }
+    
 }
 
 export async function deleteAccountByIdService(accountId){
@@ -24,13 +37,14 @@ export async function getAllAccountService(){
     
 }
 
-export async function createAccountService(createAccount: createAccountRequest){
+export async function createAccountService(createAccount: createAccountRequest, userId: string){
 
    var account: Account ={
         accountId: uuid.v4(),
         accountName: createAccount.accountName,
         accountType: createAccount.accountType,
-        description: createAccount.description
+        description: createAccount.description,
+        accountUserId: userId
     }
 
     return await accountService.createAccountAccess(account)

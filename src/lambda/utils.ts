@@ -1,4 +1,6 @@
 import * as winston from 'winston'
+import { decode } from 'jsonwebtoken'
+import { JwtPayload } from '../models/JwtPayload'
 
 /**
  * Create a logger instance to write log messages in JSON format.
@@ -15,3 +17,13 @@ export function createLogger(loggerName: string) {
       ]
     })
   }
+
+export function getUserId(authorizationfromHeader : string): string {
+
+  const split = authorizationfromHeader.split(' ')
+  const jwtToken = split[1]
+  const decodedJwt = decode(jwtToken) as JwtPayload
+  const userId = decodedJwt.sub
+  return userId
+
+}

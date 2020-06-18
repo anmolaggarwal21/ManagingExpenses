@@ -6,14 +6,14 @@ import * as uuid from 'uuid'
 
 const IncomeAccess = new incomeAccess()
 
-export async function createIncomeService(createIncome: createIncomeRequest){
+export async function createIncomeService(createIncome: createIncomeRequest, userId: string){
     var income: Income = {
         incomeId : uuid.v4(),
         amount : createIncome.amount,
         date : new Date().toDateString(),
         Description : createIncome.Description,
         CategoryId : createIncome.CategoryId ,
-        userId : 'dad528fd-9327-4e69-bf6b-de92fbde4d5c',
+        userId : userId,
         isImage : false,
         accountId: createIncome.accountId
      }

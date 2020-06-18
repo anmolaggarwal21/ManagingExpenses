@@ -8,21 +8,56 @@ import { updateCategoryRequest } from '../request/createCategoryRequest';
 export class categoryAccess{
     categoryTable = process.env.Category_Table
     categoryTableIndex = process.env.CATEGORY_TYPE_INDEX
+    categoryUserIndex= process.env.CATEGORY_USERID_INDEX
     docClient: DocumentClient =  createDynamoDBClient()
 constructor(){
 
 }
 
-async getCategoryAccessByCategoryType(categoryType: string){
-    var result = await this.docClient.query({
+// async getCategoryAccessByCategoryType(categoryType: string){
+//     var result = await this.docClient.query({
+//         TableName: this.categoryTable,
+//         IndexName: this.categoryTableIndex,
+//         KeyConditionExpression: 'categoryType = :categoryType',
+//         ExpressionAttributeValues:{
+//             ':categoryType' : categoryType
+//         },
+
+//     }).promise()
+
+//     return result.Items
+// }
+
+async getCategoryAccessByCategoryUserId(UserId: string, categoryType?: string){
+    console.log('category type is ', categoryType)
+    console.log('user id in category is', UserId)
+    var queryParam
+     queryParam={
         TableName: this.categoryTable,
-        IndexName: this.categoryTableIndex,
-        KeyConditionExpression: 'categoryType = :categoryType',
+        IndexName: this.categoryUserIndex,
+        KeyConditionExpression: 'categoryUserId = :categoryUserId',
         ExpressionAttributeValues:{
-            ':categoryType' : categoryType
+            ':categoryUserId' : UserId
         },
 
-    }).promise()
+    }
+    if(categoryType && categoryType !=''){
+        console.log('inside if of data layer')
+         queryParam={
+            TableName: this.categoryTable,
+            IndexName: this.categoryUserIndex,
+            KeyConditionExpression: 'categoryUserId = :categoryUserId',
+            
+            FilterExpression: 'categoryType = :categoryType',
+            ExpressionAttributeValues:{
+                ':categoryType' : categoryType,
+                ':categoryUserId': UserId
+            }
+        }
+
+    }
+
+    var result = await this.docClient.query(queryParam).promise()
 
     return result.Items
 }

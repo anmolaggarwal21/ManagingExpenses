@@ -6,14 +6,14 @@ import { createExpenseRequest, updateExpenseRequest } from '../request/createExp
 
 const ExpenseAccess = new expenseAccess()
 
-export async function createExpenseeService(createExpense: createExpenseRequest){
+export async function createExpenseeService(createExpense: createExpenseRequest, userId: string){
     var expense: Expense = {
         expenseId : uuid.v4(),
         amount : createExpense.amount,
         date : new Date().toDateString(),
         Description : createExpense.Description,
         CategoryId :  createExpense.CategoryId ,
-        userId : 'dad528fd-9327-4e69-bf6b-de92fbde4d5c',
+        userId : userId,
         accountId: createExpense.accountId,
         isImage : false
      }

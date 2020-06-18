@@ -3,7 +3,7 @@ import { getExpenseServiceByUserId } from "../../../businessLogic/expenseBusines
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent ) : Promise<APIGatewayProxyResult> => {
 
-    const userId= event.pathParameters.Id
+    var userId = event.headers.userid
 
     var result = await getExpenseServiceByUserId(userId)
 

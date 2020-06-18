@@ -3,7 +3,7 @@ import { getIncomeServiceByUserId } from "../../../businessLogic/incomeBusiness"
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent ) : Promise<APIGatewayProxyResult> => {
 
-    const userId= event.pathParameters.userId
+    var userId = event.headers.userid
 
     var result = await getIncomeServiceByUserId(userId)
 
@@ -13,7 +13,8 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
            item : result
         }),
         headers:{
-           'Access-Control-Allow-Origin' :'*'
+           'Access-Control-Allow-Origin' :'*',
+           'Access-Control-Allow-Headers' : 'userid'
        }
     }
 

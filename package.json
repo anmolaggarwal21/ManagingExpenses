@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "aws-sdk": "^2.686.0",
+    "axios": "^0.19.2",
+    "jsonwebtoken": "^8.5.1",
     "source-map-support": "^0.5.10",
     "winston": "^3.2.1"
   },

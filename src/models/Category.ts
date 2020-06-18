@@ -3,6 +3,7 @@ export interface Category{
    categoryId: string,
    categoryType: string,
    categoryName: string,
-   categoryDescription: string
+   categoryDescription: string,
+   categoryUserId: string
     
 }

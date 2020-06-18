@@ -2,6 +2,7 @@ import  { APIGatewayProxyHandler, APIGatewayProxyEvent, APIGatewayProxyResult } 
 import 'source-map-support/register'
 import {createExpenseRequest } from '../../../request/createExpenseRequest'
 import { createExpenseeService } from '../../../businessLogic/expenseBusiness'
+//import { getUserId } from '../../utils';
 
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent ) : Promise<APIGatewayProxyResult> => {
@@ -10,10 +11,12 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
  
  console.log(createExpense.amount)
  console.log('date is',new Date().toISOString())
+ //const authorization = event.headers.Authorization
+ var userId = event.headers.userid
  
  console.log('before calling service')
  
- var result = await createExpenseeService(createExpense)
+ var result = await createExpenseeService(createExpense,userId)
 
    return{
       statusCode : 201,

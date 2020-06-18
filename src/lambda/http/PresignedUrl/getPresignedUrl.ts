@@ -4,8 +4,8 @@ import {getPresignedUrl} from '../../../businessLogic/presignedUrlBusiness'
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent ) : Promise<APIGatewayProxyResult> => {
     console.log(' processing event' , event)
     
-    var id = event.pathParameters.id
-    var signedUrl =  getPresignedUrl(id)
+    var Id = event.pathParameters.Id
+    var signedUrl =  getPresignedUrl(Id)
     return{
         statusCode:201,
         headers:{
@@ -14,6 +14,6 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         body :  JSON.stringify( {
           uploadUrl : signedUrl
         } )
-      }
     }
+    
 }

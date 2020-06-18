@@ -28,19 +28,34 @@ provider:
     EXPENSE_ID_INDEX: ExpenseUserIdIndex
     Category_Table: categoryTable-${self:provider.stage}
     CATEGORY_TYPE_INDEX : CategoryTypeINDEX
+    CATEGORY_USERID_INDEX: CategoryUserIdIndex
     Account_Table: AccountTable-${self:provider.stage}
     ACCOUNT_TYPE_INDEX : AccountTypeINDEX
-    IMAGES_S3_BUCKET: imagesBucket-${self:provider.stage}
+    ACCOUNT_USER_ID_INDEX : AccountUserIdINDEX
+    IMAGES_S3_BUCKET: imagesbucket-${self:provider.stage}
     SIGNED_URL_EXPIRATION : 300
 
 functions:
+  Auth:
+    handler: src/lambda/auth/authorization.handler
+
   CreateIncome:
     handler: src/lambda/http/Income/createIncome.handler
     events:
       - http:
           method: post 
           path: income
-          cors: true
+          cors: 
+            origin: "*"
+            headers:
+              - userid
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+          authorizer: Auth
     iamRoleStatements:
       - Effect: "Allow"        
         Action:
@@ -52,8 +67,19 @@ functions:
     events:
       - http:
           method: get 
-          path: incomeByUser/{userId}
-          cors: true
+          path: incomeByUser
+          cors: 
+            origin: "*"
+            headers:
+                - userid
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+              
+          authorizer: Auth   
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -67,7 +93,18 @@ functions:
       - http:
           method: get 
           path: income/{userId}
-          cors: true
+          cors: 
+            origin: "*"
+            headers:
+                - userid
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+              
+          authorizer: Auth   
     iamRoleStatements:
       - Effect: "Allow"        
         Action:
@@ -80,7 +117,18 @@ functions:
       - http:
           method: delete
           path: income/{userId}
-          cors: true
+          cors: 
+            origin: "*"
+            headers:
+                - userid
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+              
+          authorizer: Auth      
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -93,7 +141,18 @@ functions:
       - http:
           method: put 
           path: income/{userId}
-          cors: true
+          cors: 
+            origin: "*"
+            headers:
+                - userid
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+              
+          authorizer: Auth    
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -106,7 +165,18 @@ functions:
       - http:
           method: post 
           path: expense
-          cors: true
+          cors: 
+            origin: "*"
+            headers:
+                - userid
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+              
+          authorizer: Auth   
     iamRoleStatements:
       - Effect: "Allow"        
         Action:
@@ -118,8 +188,19 @@ functions:
     events:
       - http:
           method: get 
-          path: expenseByUser/{Id}
-          cors: true
+          path: expenseByUser
+          cors: 
+            origin: "*"
+            headers:
+                - userid
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+              
+          authorizer: Auth     
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -133,7 +214,18 @@ functions:
       - http:
           method: get 
           path: expense/{Id}
-          cors: true
+          cors: 
+            origin: "*"
+            headers:
+                - userid
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+              
+          authorizer: Auth     
     iamRoleStatements:
       - Effect: "Allow"        
         Action:
@@ -146,7 +238,18 @@ functions:
       - http:
           method: delete
           path: expense/{Id}
-          cors: true
+          cors: 
+            origin: "*"
+            headers:
+                - userid
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+              
+          authorizer: Auth   
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -159,7 +262,18 @@ functions:
       - http:
           method: put 
           path: expense/{Id}
-          cors: true
+          cors: 
+            origin: "*"
+            headers:
+                - userid
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+              
+          authorizer: Auth   
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -172,25 +286,52 @@ functions:
       - http:
           method: post 
           path: category
-          cors: true
+          cors: 
+            origin: "*"
+            headers:
+                - userid
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+              
+          authorizer: Auth   
     iamRoleStatements:
       - Effect: "Allow"        
         Action:
           - dynamodb:PutItem        
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Category_Table}
 
-  GetCategoryByCategoryType:
-    handler: src/lambda/http/Category/getCategoryByCategoryType.handler
+  # GetCategoryByCategoryType:
+  #   handler: src/lambda/http/Category/getCategoryByCategoryType.handler
+  #   events:
+  #     - http:
+  #         method: get 
+  #         path: categoryByType/{Id}
+  #         cors: true
+  #   iamRoleStatements:
+  #     - Effect: Allow
+  #       Action:
+  #       - Dynamodb:Query
+  #       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Category_Table}/index/${self:provider.environment.CATEGORY_TYPE_INDEX}
+
+  GetCategoryByCategoryUserId:
+    handler: src/lambda/http/Category/getCategoryByCategoryUserId.handler
     events:
       - http:
           method: get 
-          path: categoryByType/{Id}
+          path: categoryByUserId
           cors: true
+          headers:
+            - userid
+          authorizer: Auth
     iamRoleStatements:
       - Effect: Allow
         Action:
-        - Dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Category_Table}/index/${self:provider.environment.CATEGORY_TYPE_INDEX}
+          - Dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Category_Table}/index/${self:provider.environment.CATEGORY_USERID_INDEX}
 
   GetCategoryByCategoryId:
     handler: src/lambda/http/Category/getCategoryByCategoryId.handler
@@ -198,11 +339,22 @@ functions:
       - http:
           method: get 
           path: categoryById/{Id}
-          cors: true
+          cors: 
+            origin: "*"
+            headers:
+                - userid
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+              
+          authorizer: Auth    
     iamRoleStatements:
       - Effect: Allow
         Action:
-        - Dynamodb:Query
+          - Dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Category_Table}
 
 
@@ -212,7 +364,18 @@ functions:
       - http:
           method: delete
           path: category/{Id}
-          cors: true
+          cors: 
+            origin: "*"
+            headers:
+                - userid
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+              
+          authorizer: Auth    
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -225,7 +388,18 @@ functions:
       - http:
           method: put 
           path: category/{Id}
-          cors: true
+          cors: 
+            origin: "*"
+            headers:
+                - userid
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+              
+          authorizer: Auth   
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -239,26 +413,61 @@ functions:
       - http:
           method: post 
           path: account
-          cors: true
+          cors: 
+            origin: "*"
+            headers:
+                - userid
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+              
+          authorizer: Auth   
     iamRoleStatements:
       - Effect: "Allow"        
         Action:
           - dynamodb:PutItem        
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Account_Table}
 
-  GetAccountByAccountType:
-    handler: src/lambda/http/Account/getAccountByAccountType.handler
+  # GetAccountByAccountType:
+  #   handler: src/lambda/http/Account/getAccountByAccountType.handler
+  #   events:
+  #     - http:
+  #         method: get 
+  #         path: accountByType/{Id}
+  #         cors: true
+  #   iamRoleStatements:
+  #     - Effect: Allow
+  #       Action:
+  #       - Dynamodb:Query
+  #       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Account_Table}/index/${self:provider.environment.ACCOUNT_TYPE_INDEX}
+  
+  GetAccountByAccountUserId:
+    handler: src/lambda/http/Account/getAccountByAccountUserId.handler
     events:
       - http:
           method: get 
-          path: accountByType/{Id}
-          cors: true
+          path: accountByUserId
+          cors:
+            origin: "*"
+            headers:
+              - userid
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              
+          authorizer: Auth   
     iamRoleStatements:
       - Effect: Allow
         Action:
-        - Dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Account_Table}/index/${self:provider.environment.ACCOUNT_TYPE_INDEX}
-
+          - Dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Account_Table}/index/${self:provider.environment.ACCOUNT_USER_ID_INDEX}
+      
  
   GetAccountByAccountId:
     handler: src/lambda/http/Account/getAccountByAccountId.handler
@@ -266,11 +475,22 @@ functions:
       - http:
           method: get 
           path: accountById/{Id}
-          cors: true
+          cors: 
+            origin: "*"
+            headers:
+                - userid
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+              
+          authorizer: Auth    
     iamRoleStatements:
       - Effect: Allow
         Action:
-        - Dynamodb:Query
+          - Dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Account_Table}
 
 
@@ -280,7 +500,18 @@ functions:
       - http:
           method: delete
           path: account/{Id}
-          cors: true
+          cors: 
+            origin: "*"
+            headers:
+                - userid
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+              
+          authorizer: Auth     
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -293,7 +524,18 @@ functions:
       - http:
           method: put 
           path: account/{Id}
-          cors: true
+          cors: 
+            origin: "*"
+            headers:
+                - userid
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+              
+          authorizer: Auth   
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -302,11 +544,22 @@ functions:
 
   PresignedUrlForIncomeExpense:
     handler: src/lambda/http/PresignedUrl/getPresignedUrl.handler
-    event:
+    events:
       - http:
           method: get
           path: getPresignedUrl/{Id}
-          cors: true
+          cors: 
+            origin: "*"
+            headers:
+                - userid
+                - Content-Type
+                - X-Amz-Date
+                - Authorization
+                - X-Api-Key
+                - X-Amz-Security-Token
+                - X-Amz-User-Agent
+              
+          authorizer: Auth     
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -369,13 +622,21 @@ resources:
             AttributeType: S 
           - AttributeName: categoryType
             AttributeType: S
+          - AttributeName: categoryUserId
+            AttributeType: S
         KeySchema:
           - AttributeName: categoryId
             KeyType: HASH
         GlobalSecondaryIndexes:
-          - IndexName:  ${self:provider.environment.CATEGORY_TYPE_INDEX}
+          # - IndexName:  ${self:provider.environment.CATEGORY_TYPE_INDEX}
+          #   KeySchema:
+          #     - AttributeName: categoryType
+          #       KeyType: HASH 
+          #   Projection:
+          #     ProjectionType: ALL
+          - IndexName:  ${self:provider.environment.CATEGORY_USERID_INDEX}
             KeySchema:
-              - AttributeName: categoryType
+              - AttributeName: categoryUserId
                 KeyType: HASH 
             Projection:
               ProjectionType: ALL
@@ -390,13 +651,21 @@ resources:
             AttributeType: S 
           - AttributeName: accountType
             AttributeType: S
+          - AttributeName: accountUserId
+            AttributeType: S
         KeySchema:
           - AttributeName: accountId
             KeyType: HASH
         GlobalSecondaryIndexes:
-          - IndexName:  ${self:provider.environment.ACCOUNT_TYPE_INDEX}
+          # - IndexName:  ${self:provider.environment.ACCOUNT_TYPE_INDEX}
+          #   KeySchema:
+          #     - AttributeName: accountType
+          #       KeyType: HASH 
+          #   Projection:
+          #     ProjectionType: ALL
+          - IndexName:  ${self:provider.environment.ACCOUNT_USER_ID_INDEX}
             KeySchema:
-              - AttributeName: accountType
+              - AttributeName: accountUserId
                 KeyType: HASH 
             Projection:
               ProjectionType: ALL
@@ -443,5 +712,19 @@ resources:
               Action: 's3:GetObject'
               Resource: 'arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket
+
+    # adding a code for the cors header as well as some other code for api gateway 
+    # GatewayResponseDefault4XX:
+    #   Type: 'AWS::ApiGateway::GatewayResponse'
+    #   Properties:
+    #     ResponseParameters:
+    #       gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+    #       gatewayresponse.header.Access-Control-Allow-Header: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,userid'"
+    #       gatewayresponse.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
+    #     ResponseType: DEFAULT_4XX
+    #     RestApiId:
+    #       Ref: 'ApiGatewayRestApi'
+      
+
           
           
