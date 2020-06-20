@@ -1,10 +1,13 @@
 import { APIGatewayProxyHandler, APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { getIncomeServiceByUserId } from "../../../businessLogic/incomeBusiness";
+import { createLogger } from '../../utils'
+
+const logger = createLogger('getIncomeByUser')
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent ) : Promise<APIGatewayProxyResult> => {
 
     var userId = event.headers.userid
-
+    logger.info('user id is', userId)
     var result = await getIncomeServiceByUserId(userId)
 
     return{

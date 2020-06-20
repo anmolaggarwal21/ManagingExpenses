@@ -2,7 +2,9 @@ import * as AWS from 'aws-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import { Category } from '../models/Category';
 import { updateCategoryRequest } from '../request/createCategoryRequest';
+import  *  as AWSXRay from 'aws-xray-sdk'
 
+const XAWS = AWSXRay.captureAWS(AWS)
 
 
 export class categoryAccess{
@@ -128,12 +130,12 @@ export function createDynamoDBClient (){
     console.log(' process enc value is '+ process.env.IS_OFFLINE)
     if(process.env.IS_OFFLINE == 'true'){
         console.log('Creating a local dynamo db instance');
-        return new AWS.DynamoDB.DocumentClient({
+        return new XAWS.DynamoDB.DocumentClient({
             region: 'localhost',
             endpoint : 'http://localhost:8000'
         })
     }
     else{
-        return new AWS.DynamoDB.DocumentClient();
+        return new XAWS.DynamoDB.DocumentClient();
     }
 }

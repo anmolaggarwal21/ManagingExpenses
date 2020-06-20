@@ -1,9 +1,12 @@
 import { APIGatewayProxyHandler, APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { deleteIncomeServiceByIncomeId } from "../../../businessLogic/incomeBusiness";
+import { createLogger } from '../../utils'
+
+const logger = createLogger('deleteIncome')
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent ) : Promise<APIGatewayProxyResult> => {
 
-    console.log('processing event', event)
+    logger.info('processing event', event)
 
     const incomeId = event.pathParameters.userId
 

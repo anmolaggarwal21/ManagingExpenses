@@ -3,18 +3,22 @@ import 'source-map-support/register'
 import {createIncomeRequest } from '../../../request/createIncomeRequest'
 import { createIncomeService } from '../../../businessLogic/incomeBusiness'
 //import  {getUserId} from '../../utils' 
+import { createLogger } from '../../utils'
+
+const logger = createLogger('createIncome')
+
 
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent ) : Promise<APIGatewayProxyResult> => {
- console.log('Processing evemt:', event)
+   logger.info('Processing evemt:', event)
  const createIncome:createIncomeRequest = JSON.parse( event.body )
  //const authorization = event.headers.Authorization
  
- console.log(createIncome.amount)
- console.log('date is',new Date().toISOString())
+ logger.info(createIncome.amount.toString())
+ logger.info('date is',new Date().toISOString())
  var userId = event.headers.userid
- console.log('user id is', userId)   
- console.log('before calling service')
+ logger.info('user id is', userId)   
+ logger.info('before calling service')
 
  
  var result = await createIncomeService(createIncome,userId)

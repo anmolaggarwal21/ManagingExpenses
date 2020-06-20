@@ -15,6 +15,10 @@ plugins:
   - serverless-iam-roles-per-function
 
 provider:
+  tracing:
+    lambda: true
+    ApiGateway: true
+# tracing is used for x ray 
   name: aws
   runtime: nodejs12.x
   stage: ${opt:stage, 'dev'}
@@ -34,6 +38,16 @@ provider:
     ACCOUNT_USER_ID_INDEX : AccountUserIdINDEX
     IMAGES_S3_BUCKET: imagesbucket-${self:provider.stage}
     SIGNED_URL_EXPIRATION : 300
+
+
+  documentation:
+    models:
+      - name: createIncome
+        contentType: application/json
+        schema: ${file(models/create-income-request.json)}
+      - name: createExpense
+        contentType: application/json
+        schema: ${file(models/create-expense-request.json)}
 
 functions:
   Auth:
@@ -56,11 +70,23 @@ functions:
               - X-Amz-Security-Token
               - X-Amz-User-Agent
           authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Create a new income
+            description: Create a new income
+            requestModels:
+              'application/json': createIncome
     iamRoleStatements:
       - Effect: "Allow"        
         Action:
           - dynamodb:PutItem        
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Income_Table}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
   GetIncomeByUserId:
     handler: src/lambda/http/Income/getIncomeByUser.handler
@@ -85,6 +111,12 @@ functions:
         Action:
         - Dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Income_Table}/index/${self:provider.environment.INCOME_ID_INDEX}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
       
   GetIncome:
@@ -110,6 +142,12 @@ functions:
         Action:
           - dynamodb:Query        
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Income_Table}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
   DeleteIncome:
     handler: src/lambda/http/Income/deleteIncome.handler
@@ -134,6 +172,12 @@ functions:
         Action:
           - dynamodb:DeleteItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Income_Table}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
   UpdateIncome:
     handler: src/lambda/http/Income/updateIncome.handler
@@ -158,6 +202,12 @@ functions:
         Action:
           - dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Income_Table}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
   CreateExpense:
     handler: src/lambda/http/Expense/createExpense.handler
@@ -177,11 +227,22 @@ functions:
                 - X-Amz-User-Agent
               
           authorizer: Auth   
+          documentation:
+            summary: Create a new income
+            description: Create a new income
+            requestModels:
+              'application/json': createExpense
     iamRoleStatements:
       - Effect: "Allow"        
         Action:
           - dynamodb:PutItem        
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Expense_Table}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
   GetExpenseByUserId:
     handler: src/lambda/http/Expense/getExpenseByUser.handler
@@ -206,6 +267,12 @@ functions:
         Action:
         - Dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Expense_Table}/index/${self:provider.environment.EXPENSE_ID_INDEX}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
       
   GetExpense:
@@ -231,6 +298,12 @@ functions:
         Action:
           - dynamodb:Query        
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Expense_Table}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
   DeleteExpense:
     handler: src/lambda/http/Expense/deleteExpense.handler
@@ -255,6 +328,12 @@ functions:
         Action:
           - dynamodb:DeleteItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Expense_Table}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
   UpdateExpense:
     handler: src/lambda/http/Expense/updateExpense.handler
@@ -279,6 +358,12 @@ functions:
         Action:
           - dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Expense_Table}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
   CreateCategory:
     handler: src/lambda/http/Category/createCategory.handler
@@ -303,6 +388,12 @@ functions:
         Action:
           - dynamodb:PutItem        
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Category_Table}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
   # GetCategoryByCategoryType:
   #   handler: src/lambda/http/Category/getCategoryByCategoryType.handler
@@ -332,6 +423,12 @@ functions:
         Action:
           - Dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Category_Table}/index/${self:provider.environment.CATEGORY_USERID_INDEX}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
   GetCategoryByCategoryId:
     handler: src/lambda/http/Category/getCategoryByCategoryId.handler
@@ -356,6 +453,12 @@ functions:
         Action:
           - Dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Category_Table}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
 
   DeleteCategory:
@@ -381,6 +484,12 @@ functions:
         Action:
           - dynamodb:DeleteItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Category_Table}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
   UpdateCategory:
     handler: src/lambda/http/Category/updateCategory.handler
@@ -405,6 +514,12 @@ functions:
         Action:
           - dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Category_Table}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
 
   CreateAccount:
@@ -430,6 +545,12 @@ functions:
         Action:
           - dynamodb:PutItem        
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Account_Table}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
   # GetAccountByAccountType:
   #   handler: src/lambda/http/Account/getAccountByAccountType.handler
@@ -467,6 +588,12 @@ functions:
         Action:
           - Dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Account_Table}/index/${self:provider.environment.ACCOUNT_USER_ID_INDEX}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
       
  
   GetAccountByAccountId:
@@ -492,6 +619,12 @@ functions:
         Action:
           - Dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Account_Table}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
 
   DeleteAccount:
@@ -517,6 +650,12 @@ functions:
         Action:
           - dynamodb:DeleteItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Account_Table}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
   UpdateAccount:
     handler: src/lambda/http/Account/updateAccount.handler
@@ -541,6 +680,12 @@ functions:
         Action:
           - dynamodb:UpdateItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.Account_Table}
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
 
   PresignedUrlForIncomeExpense:
     handler: src/lambda/http/PresignedUrl/getPresignedUrl.handler
@@ -566,6 +711,12 @@ functions:
           - s3:PutObject
           - s3:GetObject
         Resource: arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*
+      - Effect: Allow
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
     
 
 
@@ -713,17 +864,17 @@ resources:
               Resource: 'arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket
 
-    # adding a code for the cors header as well as some other code for api gateway 
-    # GatewayResponseDefault4XX:
-    #   Type: 'AWS::ApiGateway::GatewayResponse'
-    #   Properties:
-    #     ResponseParameters:
-    #       gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
-    #       gatewayresponse.header.Access-Control-Allow-Header: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,userid'"
-    #       gatewayresponse.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
-    #     ResponseType: DEFAULT_4XX
-    #     RestApiId:
-    #       Ref: 'ApiGatewayRestApi'
+   # adding a code for the cors header as well as some other code for api gateway 
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Header: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,userid'"
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
       
 
           
