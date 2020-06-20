@@ -1,0 +1,104 @@
+{
+	"info": {
+		"_postman_id": "5bae82c8-0e4b-49f5-b789-0d6ee18a814f",
+		"name": "Presigned URL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get presigned URL",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "userid",
+						"value": "google-oauth2|103855583679546073904",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkdrSU1kTlk0czVISjNIWmw1NUpVUiJ9.eyJnaXZlbl9uYW1lIjoiYW5tb2wiLCJmYW1pbHlfbmFtZSI6ImFnZ2Fyd2FsIiwibmlja25hbWUiOiJhbm1vbGFnZ2Fyd2FsMDA3IiwibmFtZSI6ImFubW9sIGFnZ2Fyd2FsIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BT2gxNEdndDBxNVRGME1TSlQxWkV3VnFwWGkyaF85Yng1U2RzN2xicU94R3pnIiwibG9jYWxlIjoiZW4iLCJ1cGRhdGVkX2F0IjoiMjAyMC0wNi0yMFQxNTo1NjozOC45NTRaIiwiaXNzIjoiaHR0cHM6Ly9kZXYtbjFvdnp4N3cuYXV0aDAuY29tLyIsInN1YiI6Imdvb2dsZS1vYXV0aDJ8MTAzODU1NTgzNjc5NTQ2MDczOTA0IiwiYXVkIjoiTXNVaTZsWkFFSUF0czRIN1VvaFFuNmNlN0UxTkZjNWMiLCJpYXQiOjE1OTI2Njg1OTgsImV4cCI6MTU5MjcwNDU5OCwiYXRfaGFzaCI6Im9jV3JWQi1WTWxJYmVQSEpRWXVLbHciLCJub25jZSI6ImJ4dFh1dFJ0UjJvUWVnX1VQb3JMM0RILWouYmdNa3dtIn0.n1_8chMZx0X3FxKBE9ybugwcBJEwVlENsA7ZqP9wdZwKBD9I_SV95IZxMtWY-pjUb_86xo0AoRe9Pq7NltaftsqUKmCXfkDx1qsLp3a1CUFCg_-z1CpatzQFLnKD4Ok1RNanIeV9sDTnHbc7QcWFBjVLQYF5YObXZNHWvHaDQ112mW8l7ncl6FVa8BgRfwwsJGJLuPPqs65CybAbrluAbG8v_W0WY-XZ81OuMXA_dzJ6k6jKdJgn3EJRkXO4gVCQ6S5nZv93z_V4_sqOKFs8JgAQZuILg3mNB3Nyk78bWNBa3RKrOEOgxc8WGRrTSiVDrKaM4JmcprH8vwAFHBGCew",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://slcwobihdb.execute-api.us-east-2.amazonaws.com/dev/getPresignedUrl/1866f8fa-72e0-403d-b46d-6a46caf33037",
+					"protocol": "https",
+					"host": [
+						"slcwobihdb",
+						"execute-api",
+						"us-east-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"getPresignedUrl",
+						"1866f8fa-72e0-403d-b46d-6a46caf33037"
+					]
+				},
+				"description": "get presigned URL"
+			},
+			"response": []
+		},
+		{
+			"name": "Put Item in the presigned URL",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": "/C:/Users/AAggarwal/Desktop/1296211.jpg"
+					}
+				},
+				"url": {
+					"raw": "https://imagesbucket-dev.s3.us-east-2.amazonaws.com/1866f8fa-72e0-403d-b46d-6a46caf33037?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIA3JFM7VDFTEDR2E5R%2F20200620%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20200620T185024Z&X-Amz-Expires=900&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMiJHMEUCIBtOAxkFUE5%2FKSM9glTcFUpap6clGu9k3SwYHA8fidc8AiEAtpoBn%2BGnapqtmRd34gL1RTq4Lby30nmwtl1gscuEw6Iq7wEINBAAGgw3NzU2MDQzODE4OTkiDGANTkok%2F73hBnQ0JCrMAdgUCraO9pNdCD9pn2AcavWERkADZmgNr8ZRlFfLBVp7%2FT18Pm7yosrQ3sFoPCspaeG35d35o7dayE2%2BxOR5zdbol1zCFFqn%2B%2FQftmxC3NMMACq8Xn8LCnu8ybU2euROkYaw0uhbdWoyEXDmEV4c%2BT4uKH11PUNu8fHTXuX3GOihXgkQaQP%2BG88MRWkdtH9qg4fbhXSOXaDd%2BArD07u4kZlc63QPF37crZ6BTqvmBsMFoG1IuWM839QtIZgdbZaete16oRrMazyrDH%2F4SzDwtLn3BTrgASewvOgUlu5g35zxcJMAxfQM3eD%2BpKGtagqzhmK91Ng9WvgdQcMf420ouNF%2BkjA6zBWkzdlfXpE87iAbDw3sarKO%2FvcEV9IY0LoJubIah5zxOEtlq7rjCHK5PobMEgIs5HjrBuO7OYraO20VoiUnRGAADIV0FGMOBGvzoLNspS%2BQT7iKF5K%2F9l6WBXhF7jTXXC1GyyQ2QjMC5pMVj4D6trlb1fZ0mdSvzAoGcYnqgI0nHnawp38pe9igAIz8rUDz%2FTd831dRhFbdi0e8eJxXqcOTKjXVmLLU3fORrcBEw4xU&X-Amz-Signature=589c1290fc4cb6d07d728590e5424a33eb510f6180bd1051258ec64a83e82f45&X-Amz-SignedHeaders=host",
+					"protocol": "https",
+					"host": [
+						"imagesbucket-dev",
+						"s3",
+						"us-east-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"1866f8fa-72e0-403d-b46d-6a46caf33037"
+					],
+					"query": [
+						{
+							"key": "X-Amz-Algorithm",
+							"value": "AWS4-HMAC-SHA256"
+						},
+						{
+							"key": "X-Amz-Credential",
+							"value": "ASIA3JFM7VDFTEDR2E5R%2F20200620%2Fus-east-2%2Fs3%2Faws4_request"
+						},
+						{
+							"key": "X-Amz-Date",
+							"value": "20200620T185024Z"
+						},
+						{
+							"key": "X-Amz-Expires",
+							"value": "900"
+						},
+						{
+							"key": "X-Amz-Security-Token",
+							"value": "IQoJb3JpZ2luX2VjEKv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMiJHMEUCIBtOAxkFUE5%2FKSM9glTcFUpap6clGu9k3SwYHA8fidc8AiEAtpoBn%2BGnapqtmRd34gL1RTq4Lby30nmwtl1gscuEw6Iq7wEINBAAGgw3NzU2MDQzODE4OTkiDGANTkok%2F73hBnQ0JCrMAdgUCraO9pNdCD9pn2AcavWERkADZmgNr8ZRlFfLBVp7%2FT18Pm7yosrQ3sFoPCspaeG35d35o7dayE2%2BxOR5zdbol1zCFFqn%2B%2FQftmxC3NMMACq8Xn8LCnu8ybU2euROkYaw0uhbdWoyEXDmEV4c%2BT4uKH11PUNu8fHTXuX3GOihXgkQaQP%2BG88MRWkdtH9qg4fbhXSOXaDd%2BArD07u4kZlc63QPF37crZ6BTqvmBsMFoG1IuWM839QtIZgdbZaete16oRrMazyrDH%2F4SzDwtLn3BTrgASewvOgUlu5g35zxcJMAxfQM3eD%2BpKGtagqzhmK91Ng9WvgdQcMf420ouNF%2BkjA6zBWkzdlfXpE87iAbDw3sarKO%2FvcEV9IY0LoJubIah5zxOEtlq7rjCHK5PobMEgIs5HjrBuO7OYraO20VoiUnRGAADIV0FGMOBGvzoLNspS%2BQT7iKF5K%2F9l6WBXhF7jTXXC1GyyQ2QjMC5pMVj4D6trlb1fZ0mdSvzAoGcYnqgI0nHnawp38pe9igAIz8rUDz%2FTd831dRhFbdi0e8eJxXqcOTKjXVmLLU3fORrcBEw4xU"
+						},
+						{
+							"key": "X-Amz-Signature",
+							"value": "589c1290fc4cb6d07d728590e5424a33eb510f6180bd1051258ec64a83e82f45"
+						},
+						{
+							"key": "X-Amz-SignedHeaders",
+							"value": "host"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
