@@ -1,0 +1,40 @@
+<form #expenseform="ngForm" (ngSubmit)="saveExpense(expenseform)">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Add Expense</h3>
+
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="ExpenseAmount">Amount</label>
+                <input id="ExpenseAmount" name="ExpenseAmount" [(ngModel)]="ExpenseAmount"  type="text" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="ExpenseDescription">Description</label>
+                <input id="ExpenseDescription" name="Description" [(ngModel)]="Description" type="text" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="ExpenseCategory">Category</label>
+                <select id="ExpenseCategory" name="Category" (ngModel)="categories" type="text" class="form-control">
+                    <option *ngFor="let category of categories" [value]="category.categoryId">{{category.categoryName}}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ExpenseAccount">Account</label>
+                <select id="ExpenseAccount" name="Account" (ngModel)="accounts" type="text" class="form-control">
+                    <option *ngFor="let account of accounts" [value]="account.accountId">{{account.accountName}}</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="panel-footer">
+            <button type="submit" class="btn btn-primary">Save</button>
+
+        </div>
+    </div>
+</form>
+
+{{expenseform.value | json }}

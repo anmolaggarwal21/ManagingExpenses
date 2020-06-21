@@ -1,0 +1,47 @@
+
+<div class="example-container mat-elevation-z8">
+<table mat-table #table [dataSource]="incomes" >
+
+    
+    
+    <!-- Position Column -->
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef> Amount </th>
+      <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+    </ng-container>
+  
+    <!-- Name Column -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef> Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+    </ng-container>
+  
+    <!-- Weight Column -->
+    <ng-container matColumnDef="Description">
+      <th mat-header-cell *matHeaderCellDef> Description </th>
+      <td mat-cell *matCellDef="let element"> {{element.Description}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="Update">
+      <th mat-header-cell *matHeaderCellDef> Update </th>
+      <td mat-cell *matCellDef="let element"> 
+        
+        <button mat-mini-fab color="primary" (click)="updateIncome(element.incomeId)"><mat-icon>update</mat-icon></button>
+    
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Delete">
+      <th mat-header-cell *matHeaderCellDef> Delete </th>
+      <td mat-cell *matCellDef="let element"> 
+        
+        <button mat-mini-fab color="primary" (click)="deleteIncome(element.incomeId)"><mat-icon>delete</mat-icon></button>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"[ngClass]="{hovered: row.hovered, highlighted: row.highlighted}" (click)="row.highlighted = !row.highlighted" (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>
+  </table>
+  </div>
+  
+  

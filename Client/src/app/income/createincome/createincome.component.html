@@ -1,0 +1,40 @@
+<form #incomeform="ngForm" (ngSubmit)="saveIncome(incomeform)">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Add Income</h3>
+
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="IncomeAmount">Amount</label>
+                <input id="IncomeAmount" name="IncomeAmount" [(ngModel)]="IncomeAmount"  type="text" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="IncomeDescription">Description</label>
+                <input id="IncomeDescription" name="Description" [(ngModel)]="Description" type="text" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="IncomeCategory">Category</label>
+                <select id="IncomeCategory" name="Category" (ngModel)="categories" type="text" class="form-control">
+                    <option *ngFor="let category of categories" [value]="category.categoryId">{{category.categoryName}}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="IncomeAccount">Account</label>
+                <select id="IncomeAccount" name="Account" (ngModel)="accounts" type="text" class="form-control">
+                    <option *ngFor="let account of accounts" [value]="account.accountId">{{account.accountName}}</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="panel-footer">
+            <button type="submit" class="btn btn-primary">Save</button>
+
+        </div>
+    </div>
+</form>
+
+{{incomeform.value | json }}

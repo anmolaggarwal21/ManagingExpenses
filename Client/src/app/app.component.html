@@ -1,0 +1,77 @@
+<div class="example-container" >
+  <mat-toolbar color="primary"  class="p-3 mb-3 bg-primary" >
+    <button *ngIf="utilInstance.idToken" mat-icon-button (click)="snav.toggle()" > <mat-icon>menu</mat-icon></button>
+    <h1 class="example-app-name">Managing Expenses</h1>
+    <button *ngIf="!utilInstance.idToken" mat-icon-button style="position: absolute; left: 97.5%" (click)="auth.login()"><mat-icon>person</mat-icon></button>
+    
+      <img *ngIf="utilInstance.idToken" mat-card-image  [src]="utilInstance.picture" alt="Profile ">
+      <button *ngIf="utilInstance.idToken" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" style="position: absolute; left: 97.5%">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="seeProfile()">
+          <mat-icon>person_outline</mat-icon>
+          <span>Profile</span>
+        </button>
+      </mat-menu>
+   
+  </mat-toolbar>
+ <app-loader></app-loader>
+  <mat-sidenav-container class="example-sidenav-container" >
+    
+    <mat-sidenav #snav mode='side'
+                 fixedTopGap="56">
+      <mat-nav-list>
+        <a mat-list-item [ngClass]="{red: utilInstance.link === 'category'}" (click)= "setValue('category')">Category</a>
+        <a mat-list-item [ngClass]="{red: utilInstance.link === 'income'}" (click)= "setValue('income')">Income</a>
+        <a mat-list-item [ngClass]="{red: utilInstance.link === 'expense'}" (click)= "setValue('expense')">Expense</a>
+        <a mat-list-item [ngClass]="{red: utilInstance.link === 'account'}" (click)= "setValue('account')" >Account</a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content *ngIf="utilInstance.link && utilInstance.link != ''  && !seeProfileVariable">
+      <div> 
+        <h2  style="text-align: center;" >{{utilInstance.link | uppercase}} Details </h2>
+      </div>
+      <div id="main">
+        <nav class="navbar navbar-default">
+          <ul class="nav navbar-nav">
+            <li>
+              <a routerLink="{{utilInstance.link}}/list">List</a>
+            </li>
+            <li>
+              <a routerLink="{{utilInstance.link}}/create">Create</a>
+            </li>
+            
+          </ul>
+        </nav>
+        <router-outlet></router-outlet>
+      </div>
+    
+    </mat-sidenav-content>
+    <mat-sidenav-content *ngIf="!utilInstance.idToken">
+    
+      <h2 style="text-align: center;"> Please Login to continue </h2>
+      <h2 style="text-align: center;">Please Click on the login button on the top right</h2>
+
+     
+    
+  </mat-sidenav-content>
+
+  <mat-sidenav-content *ngIf="utilInstance.idToken && utilInstance.link == '' " >
+    
+    <h2 style="text-align: center;"> Successfully Logged In </h2 >
+      <h2 style="text-align: center;">Please Click on the menu button on the top left to start </h2>
+   
+  
+</mat-sidenav-content>
+
+    <mat-sidenav-content *ngIf = "seeProfileVariable">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+
+
+  </mat-sidenav-container>
+  
+</div>
+   

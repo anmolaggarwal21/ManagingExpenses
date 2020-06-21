@@ -1,0 +1,31 @@
+<form #updateform="ngForm" (ngSubmit)="updateAccount(updateform)">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title"> Update Account</h3>
+
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="accountType">Type</label>
+                <select id="accountType" name="accountType" [(ngModel)]="accountType"  type="text" class="form-control">
+                   <option value="Debit">Debit</option> 
+                   <option value="Credit">Credit</option> 
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="accountName">Name</label>
+                <input id="accountName" name="accountName" [(ngModel)]="accountName"  type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="accountDescription">Description</label>
+                <input id="accountDescription" name="Description" [(ngModel)]="Description" type="text" class="form-control">
+            </div>
+        </div>
+        <div class="panel-footer">
+            <button type="submit" class="btn btn-primary">Save</button>
+
+        </div>
+    </div>
+</form>
+
+{{updateform.value | json }}
