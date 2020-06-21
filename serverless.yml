@@ -13,6 +13,8 @@ custom:
 plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
+  - serverless-reqvalidator-plugin # plugin for validation
+  - serverless-aws-documentation # pre requisite for validation plugin 
 
 provider:
   tracing:
@@ -876,6 +878,14 @@ resources:
         RestApiId:
           Ref: 'ApiGatewayRestApi'
       
+    RequestBodyValidator:
+      Type: AWS::ApiGateway::RequestValidator
+      Properties: 
+        Name: 'request-body-validator'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false
 
           
           
