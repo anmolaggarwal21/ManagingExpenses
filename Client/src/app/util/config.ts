@@ -11,7 +11,7 @@ export class urlForServer {
     public static authClientID = "MsUi6lZAEIAts4H7UohQn6ce7E1NFc5c"
     public static authDomain = "dev-n1ovzx7w.auth0.com"
     public static authResponseType = 'token id_token'
-    public static authRedirectUri= "http://my-manageexpense.s3-website.us-east-2.amazonaws.com/callback"
+    public static authRedirectUri= "http://localhost:4200/callback"
     public static authScope = 'openid profile'
 
 
