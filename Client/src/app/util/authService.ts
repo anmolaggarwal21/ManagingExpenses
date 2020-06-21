@@ -94,6 +94,7 @@ export class AuthService{
   // Ensure that returnTo URL is specified in Auth0
   // Application settings for Allowed Logout URLs
   public logout(): void {
+    localStorage.clear()
     this.auth.logout({
       returnTo: "http://localhost:4200",
       clientID: urlForServer.authClientID,
